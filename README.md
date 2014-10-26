@@ -1,5 +1,8 @@
 #small-programs  
-Various personal small programs that can be useful  
+Various personal small programs that can be useful
+  
+  
+==============  
 
 ####You can run these commands from a terminal in the repository folder:  
 
