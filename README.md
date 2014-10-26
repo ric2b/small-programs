@@ -1,4 +1,4 @@
-Small-programs
+small-programs
 ==============
 
 Various personal small programs that can be useful
