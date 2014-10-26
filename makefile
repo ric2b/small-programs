@@ -4,16 +4,16 @@ CFLAGS = -Wall -g
 all: mem_alloc
 
 # mem_alloc
-mem_alloc: mem_alloc.o
+mem_alloc: source/mem_alloc.o
 	$(CC) $(CFLAGS) $^ -o $@
-	rm mem_alloc.o
 
-mem_alloc.o: mem_alloc.c
+source/mem_alloc.o: source/mem_alloc.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
+#clean
 c: 
 	clear
-	rm *.o
+	rm source/*.o
 
 
 
