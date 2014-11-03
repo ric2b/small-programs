@@ -1,24 +1,34 @@
 import sys
 import pprint
 import random
+import os
 
 user_input = raw_input("Please input the names with a space in between >> ").split(" ")
 
 n_people = len(user_input)
-names = zip(range(n_people), user_input)
+names = dict(zip(range(n_people), user_input))
 
-print names
+raffle = {}
 
-raffle = []
-
-for key, name in names:
-	raffle.append((name, random.randint(0,n_people-1))) 
-	
+for key in names:
+	valid = False
+	while valid == False:
+		attempt = random.randint(0,n_people-1)
+		valid = True 
+		if names[attempt] in raffle.values() or attempt == key:
+			valid = False
+				
+	raffle[names[key]] = names[attempt]		
+			
 print raffle
-
-gifts_to = []
-
-for gifter_name, giftee_key in raffle:
-	gifts_to.append((gifter_name, names[giftee_key][1]))
+'''
+while True:
+	os.system('cls' if os.name == 'nt' else 'clear')
+	query = raw_input("Who are you? >> ")	
+	try:
+		print "You're " + gifts_to[query] + "'s secret santa! :D"
+		raw_input("\nPress Enter and allow the next person to query")
+	except: 
+		print "This name wasn't entered into the raffle, try again"
 	
-print gifts_to
+'''
