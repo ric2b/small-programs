@@ -9,7 +9,11 @@ n_people = len(user_input)
 if n_people < 2:
 	print "You gift yourself, go make some friends"
 	exit()
+
 names = dict(zip(range(n_people), user_input))
+if len(names.values()) != len(set(names.values())):
+	print "you entered the same name(s) more than once, try again"
+	exit()
 
 raffle = {}
 for key in names:
