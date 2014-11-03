@@ -10,6 +10,9 @@ mem_alloc: source/mem_alloc.o
 source/mem_alloc.o: source/mem_alloc.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
+# secret_santa
+secret_santa:
+	python source/secret_santa.py
 #clean
 c: 
 	clear
