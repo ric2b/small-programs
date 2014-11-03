@@ -16,4 +16,5 @@ make c | clean all .o files from the source folder
   
 progam | purpose
 :----------- | :-----------  
-mem_alloc | uses a user specified ammount of 100MB blocks from system memory, can be useful for testing  
+mem_alloc | uses a user specified ammount of 100MB blocks from system memory, can be useful for testing
+secret_santa | matches each given name with a single one of the other given names
