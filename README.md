@@ -9,7 +9,7 @@ Various personal small programs that can be useful
 command | effect  
 :---------- | :----------  
 make | compile all programs  
-make prog_name | compile a specific program  
+make prog_name | compile a specific program (or run it, if it has a '*' next to it's name) 
 make c | clean all .o files from the source folder  
 
 ####Availiable programs:  
@@ -17,4 +17,4 @@ make c | clean all .o files from the source folder
 progam | purpose
 :----------- | :-----------  
 mem_alloc | uses a user specified ammount of 100MB blocks from system memory, can be useful for testing
-secret_santa | matches each given name with a single one of the other given names
+secret_santa * | matches each given name with a single one of the other given names
