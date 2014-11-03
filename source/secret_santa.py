@@ -3,12 +3,14 @@ import pprint
 import random
 
 user_input = raw_input("Please input the names with a space in between >> ").split(" ")
-names = zip(range(len(user_input)), user_input)
+n_people = len(user_input)
+names = zip(range(n_people), user_input)
 print names
 
-print random.randint(0,len(user_input)-1)
+raffle = []
 
-
-
-
+for key, name in names:
+	raffle.append((name, random.randint(0,n_people-1))) 
+	
+print raffle
 
