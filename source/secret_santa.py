@@ -6,10 +6,12 @@ import os
 user_input = raw_input("Please input the names with a space in between >> ").split(" ")
 
 n_people = len(user_input)
+if n_people < 2:
+	print "You gift yourself, go make some friends"
+	exit()
 names = dict(zip(range(n_people), user_input))
 
 raffle = {}
-
 for key in names:
 	valid = False
 	while valid == False:
@@ -20,15 +22,16 @@ for key in names:
 				
 	raffle[names[key]] = names[attempt]		
 			
-print raffle
-'''
+#print raffle
+
 while True:
 	os.system('cls' if os.name == 'nt' else 'clear')
 	query = raw_input("Who are you? >> ")	
 	try:
-		print "You're " + gifts_to[query] + "'s secret santa! :D"
+		print "You're " + raffle[query] + "'s secret santa! :D"
 		raw_input("\nPress Enter and allow the next person to query")
 	except: 
 		print "This name wasn't entered into the raffle, try again"
+		raw_input("(Press Enter)")
 	
-'''
+
