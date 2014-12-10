@@ -18,3 +18,6 @@ progam | purpose
 :----------- | :-----------  
 mem_alloc | uses a user specified ammount of 100MB blocks from system memory, can be useful for testing
 secret_santa * | matches each given name with a single one of the other given names (without matching multiple names to the same one)
+
+####Projected:
+* Enigma, a program that encodes and decodes Enigma communications from WW2 
