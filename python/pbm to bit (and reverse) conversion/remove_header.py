@@ -1,5 +1,5 @@
 import sys
-ignoreFirst = 11 #the first 50 bytes of the pbm file are discarded, 11 for PhotoShop files
+ignoreFirst = 50 #the first 50 bytes of the pbm file are discarded, 11 for PhotoShop files
 extensionLenght = 4
 
 def check_args():
