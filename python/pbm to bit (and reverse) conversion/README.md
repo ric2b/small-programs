@@ -1,7 +1,7 @@
 ###NOTE: all mentioned directories are to be created in the same directory as this readme
 
 ####To convert pbm to bit: ##
-	1. Generate 128x128 .pbm files in Gimp (or a similar program, but you may need to change the ammount of bytes deleted) 
+	1. Generate 128x128 .pbm files in Gimp (or a similar program, but you may need to change the header size in the script) 
 	2. Store all .pbm files you want to convert in a directory called "pbm"
 	3. Create a folder called "bit"
 	4. From terminal, run this command: python run_for_all.py remove
