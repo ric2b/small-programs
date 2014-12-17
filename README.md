@@ -1,5 +1,6 @@
 #small-programs  
-Various personal small programs that can be useful
+Various personal small programs that can be useful.
+
 The python folder contains scripts that do not require use of the makefile  
   
 ==============  
