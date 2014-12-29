@@ -24,9 +24,9 @@ def Setup(settingsFile):
 
 	if settingsFile != None:
 		try:
-			f = open(settingsFile, 'r')
-		except IOError:
-			print "(E) Failed to open '" + settingsFile + "'."
+			f = open(settingsFile, 'rU') # converts all newlines to \n
+ 		except IOError:
+			print "(E) Failed to open the settings file '" + settingsFile + "'."
 			exit()
 
 		lines = f.readlines()
@@ -49,7 +49,7 @@ def Setup(settingsFile):
 def readMessage(messageFilename):
 	
 	try:
-		f = open(messageFilename, 'r')
+		f = open(messageFilename, 'rU')
 	except IOError:
 		print "(E) Failed to open '" + messageFilename + "'."
 		exit()
@@ -64,7 +64,7 @@ def getPlugboard(plugboardFile):
 	plugboard = {}
 
 	try:
-		f = open(plugboardFile, 'r')
+		f = open(plugboardFile, 'rU')
 	except IOError:
 		print "(E) Failed to open '" + plugboardFile + "', will run with unconnected plugboard."
 
@@ -83,11 +83,33 @@ def getPlugboard(plugboardFile):
 		plugboard[x] = y
 		plugboard[y] = x
 
+		if i == 18:
+			break
+
+	f.close()
 	return plugboard
 
 
 def getRotor(rotorFile):
-	pass
+	rotor = []
+
+	try:
+		f = open(rotorFile, 'rU')
+	except IOError:
+		print "(E) Failed to open '" + rotorFile + "'."
+		exit()
+
+	lines = f.readlines()
+	if len(lines) != 36:
+		print "(E) rotor file '" + rotorFile + "' does not have exactly 36 lines, can't be used." 
+		exit()
+	
+	for i in range(0, 36):
+		rotor.append(lines[i][0])
+
+	f.close()
+	return rotor
+
 
 def travelPlugboard(character, plugboard):
 	
@@ -103,23 +125,42 @@ def travelPlugboard(character, plugboard):
 		return transcoded
 
 
-def travelRotor(character, rotor, rotorPosition):
+def travelRotor(character, rotor, rotorPosition = 0):
 	
-	try:
-		transcoded = connections[character]
-	except KeyError:
-		transcoded = character
+	if ord(character.lower()) in range(ord('a'), ord('z')+1):
+		index = ord(character.lower()) - ord('a') + 10
+	elif ord(character) in range(ord('0'), ord('9')+1):
+		index = ord(character) - ord('0')
+	else:
+		index = None
 
-	return transcoded
+	if index == None:
+		transcoded = character
+	else:
+		transcoded = rotor[index + rotorPosition]
+
+	if character.istitle():
+		return transcoded.upper()
+	else:
+		return transcoded
+
+def turnRotors(rotorPosition1, rotorPosition2, rotorPosition3):
+	
+	return rotorPosition1, rotorPosition2, rotorPosition3
 
 
 def transcodeMessage(message, plugboard, rotor1, rotor2, rotor3):
-	transcodedMessage = []	
+	transcodedMessage = []
+	intermediate = []	
 
 	for i in range(0, len(message)):
-		transcodedMessage += travelPlugboard(message[i], plugboard)
+		intermediate += travelRotor(message[i], rotor1)
 
-	return ''.join(transcodedMessage)
+#	for i in range(0, len(message)):
+#		transcodedMessage += travelPlugboard(intermediate[i], plugboard)
+
+#	return ''.join(transcodedMessage)
+	return ''.join(intermediate)
 
 
 messageFile, settingsFile = check_args()
