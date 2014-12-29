@@ -30,20 +30,22 @@ def Setup(settingsFile):
 			exit()
 
 		lines = f.readlines()
-		if len(lines) > 4:
+		if len(lines) > 6:
 			print "(W) The settings file has more than 4 filenames, remaining ones will be discarded"
 
-		plugboardFile 	= lines[0]
-		rotor1File 		= lines[1]
-		rotor2File 		= lines[2]
-		rotor3File 		= lines[3]
+		plugboardFile 	= lines[0].rstrip()
+		rotor1File 		= lines[1].rstrip()
+		rotor2File 		= lines[2].rstrip()
+		rotor3File 		= lines[3].rstrip()
+		rotorPositions	= lines[4].rstrip()
+		destinationFile = lines[5].rstrip()
 
 	plugboard 	= getPlugboard(plugboardFile)
 	rotor1 		= getRotor(rotor1File)
 	rotor2 		= getRotor(rotor2File) 
 	rotor3 		= getRotor(rotor3File)  
 	
-	return plugboard, rotor1, rotor2, rotor3
+	return plugboard, rotor1, rotor2, rotor3, rotorPositions, destinationFile
 
 
 def readMessage(messageFilename):
@@ -149,23 +151,30 @@ def turnRotors(rotorPosition1, rotorPosition2, rotorPosition3):
 	return rotorPosition1, rotorPosition2, rotorPosition3
 
 
-def transcodeMessage(message, plugboard, rotor1, rotor2, rotor3):
+def transcodeMessage(message, plugboard, rotor1, rotor2, rotor3, rotorPositions):
 	transcodedMessage = []
 	intermediate = []	
 
 	for i in range(0, len(message)):
 		intermediate += travelRotor(message[i], rotor1)
 
-#	for i in range(0, len(message)):
-#		transcodedMessage += travelPlugboard(intermediate[i], plugboard)
+	for i in range(0, len(message)):
+		transcodedMessage += travelPlugboard(intermediate[i], plugboard)
 
-#	return ''.join(transcodedMessage)
+	return ''.join(transcodedMessage)
 	return ''.join(intermediate)
 
 
 messageFile, settingsFile = check_args()
-plugboard, rotor1, rotor2, rotor3 = Setup(settingsFile)
+plugboard, rotor1, rotor2, rotor3, rotorPositions, destinationFile = Setup(settingsFile)
 message = readMessage(messageFile)
-transcodedMessage = transcodeMessage(message, plugboard, rotor1, rotor2, rotor3)
+transcodedMessage = transcodeMessage(message, plugboard, rotor1, rotor2, rotor3, rotorPositions)
+
+try: 
+	f = open(destinationFile, 'w')
+	f.write(transcodedMessage)
+	f.close()
+except IOError:
+	print "(E) Unable to write the output file."
 
 print '\n' + transcodedMessage

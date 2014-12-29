@@ -1,0 +1,6 @@
+plugboardA.txt
+rotorA.txt
+rotorB.txt
+rotorC.txt
+1 5 23
+encoded.txt
