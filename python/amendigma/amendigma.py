@@ -2,6 +2,8 @@ import sys
 import string
 import time
 
+myAlphabet = '0123456789abcdefghijklmnopqrstuvwxyz'
+
 def check_args():
 	""" checks if a file was supplied to the script """
 	if len(sys.argv) != 2 and len(sys.argv) != 3:
@@ -18,7 +20,7 @@ def Setup(settingsFile):
 
 	# Defaults	
 	rotorPositions	= [0,0,0]
-	rotor1File 		= "rotorA.txt"
+	rotor1File 		= "test.txt"
 	rotor2File 		= "rotorB.txt"
 	rotor3File 		= "rotorC.txt"
 	plugboardFile 	= None
@@ -70,23 +72,15 @@ def readMessage(messageFilename):
 	return message
 
 def getIndexFromChar(character):
-	if ord(character) in range(ord('a'), ord('z')+1):
-		index = ord(character) - ord('a') + 10
-	elif ord(character) in range(ord('0'), ord('9')+1):
-		index = ord(character) - ord('0')
-	else:
+	try:
+		index = myAlphabet.index(character)
+	except ValueError:
 		index = None
 
 	return index
 
 def getCharFromIndex(index):
-	offset = 0
-	if index in range(10, 36):
-		offset = ord('a') - 10
-	elif index in range(0, 10):	
-		offset = ord('0')
-
-	return str(unichr(index+offset))
+	return myAlphabet[index]
 
 def getPlugboard(plugboardFile):
 	if plugboardFile == None:
@@ -122,8 +116,7 @@ def getPlugboard(plugboardFile):
 
 
 def getRotor(rotorFile):
-	rotorFW = []
-	rotorBW = []
+	rotor = []
 
 	try:
 		f = open(rotorFile, 'rU')
@@ -137,17 +130,11 @@ def getRotor(rotorFile):
 		exit()
 	
 	for i in range(0, 36):
-		rotorFW.append(lines[i][0])
-		rotorBW.append(0) #initialize rotorBW
+		rotor.append(getIndexFromChar(lines[i][0]))
 	
 	f.close()
 
-	for x, y in enumerate(rotorFW):
-		index = getIndexFromChar(y)
-
-		rotorBW[index] = getCharFromIndex(x)
-
-	return (rotorFW, rotorBW)
+	return rotor
 
 
 def travelPlugboard(character, plugboard):
@@ -168,20 +155,40 @@ def travelPlugboard(character, plugboard):
 
 def travelRotor(character, rotor, direction, rotorPosition = 0):
 
-	index = getIndexFromChar(character.lower())
+	index = getIndexFromChar(character)
+
+	tempRotor = rotor[rotorPosition:] + rotor[:rotorPosition]
 
 	if index == None:
 		return character
 	else:
 		if direction == "forward":
-			transcoded = rotor[0][(index + rotorPosition)%36]
+			transcoded = tempRotor[index]
 		if direction == "backwards":
-			transcoded = rotor[1][(index + rotorPosition)%36]
+			transcoded = tempRotor.index(index)
 
-	if character.istitle():
-		return transcoded.upper()
-	else:
-		return transcoded
+	return getCharFromIndex(transcoded)
+
+
+def travelReflector(character):
+	# pair all the characters in a random way
+	#firstHalf	= {'a':'3', 'b':'4', 'c':'x', 'd':'v', 'e':'y', 'f':'0', 'g':'2', 'h':'w', 'i':'t', 'j':'9', 'k':'7', 'l':'z', 'm':'1', 'n':'5', 'o':'s', 'p':'8', 'q':'6', 'r':'u'} # 36/2 = 18 
+	firstHalf	= {'0':'1', '2':'3', '4':'5', 'd':'v', 'e':'y', 'f':'c', 'g':'a', 'h':'w', 'i':'t', 'j':'9', 'k':'7', 'l':'z', 'm':'x', 'n':'b', 'o':'s', 'p':'8', 'q':'6', 'r':'u'} # 36/2 = 18 
+	secondHalf	= {v: k for k, v in firstHalf.iteritems()}
+
+	reflected = character
+
+	try:
+		reflected = firstHalf[character]
+	except KeyError:
+		pass
+
+	try:
+		reflected = secondHalf[character]
+	except KeyError:
+		pass
+	
+	return reflected	
 
 
 def turnRotors(rotorPositions):
@@ -200,31 +207,11 @@ def turnRotors(rotorPositions):
 	return rotorPositions
 
 
-def travelReflector(character):
-	# pair all the characters in a random way
-	firstHalf	= {'a':'3', 'b':'4', 'c':'x', 'd':'v', 'e':'y', 'f':'0', 'g':'2', 'h':'w', 'i':'t', 'j':'9', 'k':'7', 'l':'z', 'm':'1', 'n':'5', 'o':'s', 'p':'8', 'q':'6', 'r':'u'} # 36/2 = 18 
-	secondHalf	= {v: k for k, v in firstHalf.iteritems()}
-
-	reflected = character
-
-	try:
-		reflected = firstHalf[character]
-	except KeyError:
-		pass
-
-	try:
-		reflected = secondHalf[character]
-	except KeyError:
-		pass
-	
-	return reflected	
-
-
 def transcodeMessage(message, plugboard, rotor1, rotor2, rotor3, rotorPositions):
 	transcodedMessage 	= []
 
 	for i in range(0, len(message)):
-		#rotorPositions = turnRotors(rotorPositions)
+		rotorPositions = turnRotors(rotorPositions)
 		# first pass
 		step0 = travelPlugboard(message[i].lower(), plugboard)
 		step1 = travelRotor(step0, rotor1, "forward", rotorPositions[0])
@@ -236,7 +223,7 @@ def transcodeMessage(message, plugboard, rotor1, rotor2, rotor3, rotorPositions)
 		step1 = travelRotor(step2, rotor2, "backwards", rotorPositions[1])
 		step0 = travelRotor(step1, rotor1, "backwards", rotorPositions[0])
 		transcodedMessage += travelPlugboard(step0, plugboard)
-		
+		print rotorPositions	
 	
 	return ''.join(transcodedMessage)
 #	return ''.join(intermediate1)
@@ -245,9 +232,6 @@ messageFile, settingsFile = check_args()
 plugboard, rotor1, rotor2, rotor3, rotorPositions, destinationFile = Setup(settingsFile)
 message = readMessage(messageFile)
 transcodedMessage = transcodeMessage(message, plugboard, rotor1, rotor2, rotor3, rotorPositions)
-
-print travelRotor('p', rotor1, "backwards", 5)
-print travelRotor('5', rotor1, "forward", 5)
 
 print '\n' + transcodedMessage
 
