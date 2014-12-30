@@ -13,7 +13,7 @@ def check_args():
 		print "(E) Usage: python " + sys.argv[0] + " <message_file>\n"
 		exit()
 	else:
-		return sys.argv[1], "config.txt"
+		return sys.argv[1], currentDir + "config.txt"
 
 
 def Setup(settingsFile):
@@ -42,13 +42,13 @@ def Setup(settingsFile):
 		rotorPositions[1] = int(temp.split(' ')[1])
 		rotorPositions[2] = int(temp.split(' ')[2])
 
-		rotor1File 	= lines[1].rstrip()
-		rotor2File 	= lines[2].rstrip()
-		rotor3File 	= lines[3].rstrip()		
+		rotor1File 	= currentDir + lines[1].rstrip()
+		rotor2File 	= currentDir + lines[2].rstrip()
+		rotor3File 	= currentDir + lines[3].rstrip()		
 		if len(lines) >= 5:
-			plugboardFile 	= lines[4].rstrip()
+			plugboardFile 	= currentDir + lines[4].rstrip()
 		if len(lines) >= 6:
-			destinationFile = lines[5].rstrip()
+			destinationFile = currentDir + lines[5].rstrip()
 
 	plugboard 	= getPlugboard(plugboardFile)
 	rotor1 		= getRotor(rotor1File)
