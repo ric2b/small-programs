@@ -10,7 +10,7 @@ def check_args():
 		print "(E) Usage: python " + sys.argv[0] + " <message_file> (mandatory) [settings_file] (optional)\n"
 		exit()
 	if len(sys.argv) == 2:
-		print "(W) No settings file given, will use the defaults. (No plugboard)"
+		print "(W) No settings file given, will use the defaults."
 		return sys.argv[1], None
 	else:
 		return sys.argv[1], sys.argv[2]
@@ -20,10 +20,10 @@ def Setup(settingsFile):
 
 	# Defaults	
 	rotorPositions	= [0,0,0]
-	rotor1File 		= "test.txt"
-	rotor2File 		= "rotorB.txt"
-	rotor3File 		= "rotorC.txt"
-	plugboardFile 	= None
+	rotor1File 		= "components/rotorA.txt"
+	rotor2File 		= "components/rotorB.txt"
+	rotor3File 		= "components/rotorC.txt"
+	plugboardFile 	= "components/plugboardA.txt"
 	destinationFile	= "encoded.txt"
 
 	if settingsFile != None:
@@ -172,8 +172,8 @@ def travelRotor(character, rotor, direction, rotorPosition = 0):
 
 def travelReflector(character):
 	# pair all the characters in a random way
-	#firstHalf	= {'a':'3', 'b':'4', 'c':'x', 'd':'v', 'e':'y', 'f':'0', 'g':'2', 'h':'w', 'i':'t', 'j':'9', 'k':'7', 'l':'z', 'm':'1', 'n':'5', 'o':'s', 'p':'8', 'q':'6', 'r':'u'} # 36/2 = 18 
-	firstHalf	= {'0':'1', '2':'3', '4':'5', 'd':'v', 'e':'y', 'f':'c', 'g':'a', 'h':'w', 'i':'t', 'j':'9', 'k':'7', 'l':'z', 'm':'x', 'n':'b', 'o':'s', 'p':'8', 'q':'6', 'r':'u'} # 36/2 = 18 
+	firstHalf	= {'a':'3', 'b':'4', 'c':'x', 'd':'v', 'e':'y', 'f':'0', 'g':'2', 'h':'w', 'i':'t', 'j':'9', 'k':'7', 'l':'z', 'm':'1', 'n':'5', 'o':'s', 'p':'8', 'q':'6', 'r':'u'} # 36/2 = 18 
+	#firstHalf	= {'0':'1', '2':'3', '4':'5', 'd':'v', 'e':'y', 'f':'c', 'g':'a', 'h':'w', 'i':'t', 'j':'9', 'k':'7', 'l':'z', 'm':'x', 'n':'b', 'o':'s', 'p':'8', 'q':'6', 'r':'u'} # 36/2 = 18 
 	secondHalf	= {v: k for k, v in firstHalf.iteritems()}
 
 	reflected = character
@@ -222,8 +222,7 @@ def transcodeMessage(message, plugboard, rotor1, rotor2, rotor3, rotorPositions)
 		step2 = travelRotor(step3, rotor3, "backwards", rotorPositions[2])
 		step1 = travelRotor(step2, rotor2, "backwards", rotorPositions[1])
 		step0 = travelRotor(step1, rotor1, "backwards", rotorPositions[0])
-		transcodedMessage += travelPlugboard(step0, plugboard)
-		print rotorPositions	
+		transcodedMessage += travelPlugboard(step0, plugboard)	
 	
 	return ''.join(transcodedMessage)
 #	return ''.join(intermediate1)
