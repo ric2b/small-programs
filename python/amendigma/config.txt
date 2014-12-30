@@ -1,6 +1,6 @@
-plugboardA.txt
+1 5 23
 rotorA.txt
 rotorB.txt
 rotorC.txt
-1 5 23
+plugboardA.txt
 encoded.txt
