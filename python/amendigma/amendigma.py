@@ -9,14 +9,11 @@ myAlphabet = '0123456789abcdefghijklmnopqrstuvwxyz'
 
 def check_args():
 	""" checks if a file was supplied to the script """
-	if len(sys.argv) != 2 and len(sys.argv) != 3:
-		print "(E) Usage: python " + sys.argv[0] + " <message_file> (mandatory) [settings_file] (optional)\n"
+	if len(sys.argv) != 2:
+		print "(E) Usage: python " + sys.argv[0] + " <message_file>\n"
 		exit()
-	if len(sys.argv) == 2:
-		print "(W) No settings file given, will use the defaults."
-		return sys.argv[1], None
 	else:
-		return sys.argv[1], sys.argv[2]
+		return sys.argv[1], "config.txt"
 
 
 def Setup(settingsFile):
@@ -245,4 +242,4 @@ if destinationFile != None:
 	except IOError:
 		print "(E) Unable to write the output file."
 
-raw_input("Press Enter to continue...")
+#raw_input("Press Enter to continue...")
