@@ -2,6 +2,9 @@ import sys
 import string
 import time
 
+import os
+currentDir = os.path.dirname(sys.argv[0]) + '/'
+
 myAlphabet = '0123456789abcdefghijklmnopqrstuvwxyz'
 
 def check_args():
@@ -20,11 +23,11 @@ def Setup(settingsFile):
 
 	# Defaults	
 	rotorPositions	= [0,0,0]
-	rotor1File 		= "components/rotorA.txt"
-	rotor2File 		= "components/rotorB.txt"
-	rotor3File 		= "components/rotorC.txt"
-	plugboardFile 	= "components/plugboardA.txt"
-	destinationFile	= "encoded.txt"
+	rotor1File 		= currentDir + "components/rotorA.txt"
+	rotor2File 		= currentDir + "components/rotorB.txt"
+	rotor3File 		= currentDir + "components/rotorC.txt"
+	plugboardFile 	= currentDir + "components/plugboardA.txt"
+	destinationFile	= currentDir + "encoded.txt"
 
 	if settingsFile != None:
 		try:
@@ -92,7 +95,7 @@ def getPlugboard(plugboardFile):
 		f = open(plugboardFile, 'rU')
 	except IOError:
 		print "(E) Failed to open '" + plugboardFile + "', will run with unconnected plugboard."
-		print f
+		return None
 	for digit in string.digits:
 		plugboard[digit] = digit
 
@@ -232,7 +235,7 @@ plugboard, rotor1, rotor2, rotor3, rotorPositions, destinationFile = Setup(setti
 message = readMessage(messageFile)
 transcodedMessage = transcodeMessage(message, plugboard, rotor1, rotor2, rotor3, rotorPositions)
 
-print '\n' + transcodedMessage
+print '\n' + transcodedMessage + '\n'
 
 if destinationFile != None:
 	try: 
@@ -241,4 +244,5 @@ if destinationFile != None:
 		f.close()
 	except IOError:
 		print "(E) Unable to write the output file."
-	exit()
+
+raw_input("Press Enter to continue...")
