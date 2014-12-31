@@ -3,4 +3,4 @@ components/rotorA.txt
 components/rotorB.txt
 components/rotorC.txt
 components/plugboardA.txt
-encoded.txt
+resultado.txt
