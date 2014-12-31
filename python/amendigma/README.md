@@ -1,4 +1,4 @@
-###NOTE: The config.txt file is required, as well as files for the rotors (can use the same for all rotors. Examples are on the 'components' folder). The plugboard is optional (no plugboard is the civilian version).
+###NOTE: The config.txt file is required, as well as files for the rotors (There are some on the 'components' folder). The plugboard is optional (no plugboard is the civilian version).
 
 ####To encode: ##
 	1. Write your message into a text file. Take note of the rotors used, rotor settings and plugboard used (These are all on the config.txt file)
