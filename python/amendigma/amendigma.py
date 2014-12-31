@@ -3,7 +3,9 @@ import string
 import time
 
 import os
-currentDir = os.path.dirname(sys.argv[0]) + '/'
+currentDir = os.path.dirname(sys.argv[0])
+if currentDir != '':
+	currentDir = currentDir + '/'
 
 myAlphabet = '0123456789abcdefghijklmnopqrstuvwxyz'
 
@@ -14,6 +16,22 @@ def check_args():
 		exit()
 	else:
 		return sys.argv[1], currentDir + "config.txt"
+
+
+def ignoreComments(filename):
+	try:
+		f = open(filename, 'rU')
+	except IOError:
+		print "(E) Failed to open the settings file '" + filename + "'."
+		exit()
+
+	parsedLines = []
+	lines = f.readlines()
+	for i in range(0, len(lines)):
+		if lines[i][0] != '#' and lines[i][0] != ' ' and lines[i][0] != '\n' and lines[i][0] != '\t':
+			parsedLines.append(lines[i])
+
+	return parsedLines
 
 
 def Setup(settingsFile):
@@ -27,13 +45,17 @@ def Setup(settingsFile):
 	destinationFile	= currentDir + "encoded.txt"
 
 	if settingsFile != None:
+		#print currentDir
+		lines = ignoreComments(settingsFile)
+		'''
 		try:
-			f = open(settingsFile, 'rU') # converts all newlines to \n
- 		except IOError:
+			f = open(settingsFile, 'rU')
+		except IOError:
 			print "(E) Failed to open the settings file '" + settingsFile + "'."
 			exit()
 
 		lines = f.readlines()
+		'''
 		if len(lines) > 6:
 			print "(W) The settings file has more than 6 lines, remaining ones will be discarded"
 
@@ -44,11 +66,14 @@ def Setup(settingsFile):
 
 		rotor1File 	= currentDir + lines[1].rstrip()
 		rotor2File 	= currentDir + lines[2].rstrip()
-		rotor3File 	= currentDir + lines[3].rstrip()		
-		if len(lines) >= 5:
-			plugboardFile 	= currentDir + lines[4].rstrip()
-		if len(lines) >= 6:
-			destinationFile = currentDir + lines[5].rstrip()
+		rotor3File 	= currentDir + lines[3].rstrip()
+		destinationFile = currentDir + lines[4].rstrip()		
+		if len(lines) < 6:
+			plugboardFile = None
+			print "(W) running without a plugboard (civilian version)."
+		else:
+			plugboardFile = currentDir + lines[5].rstrip()
+			
 
 	plugboard 	= getPlugboard(plugboardFile)
 	rotor1 		= getRotor(rotor1File)
@@ -173,7 +198,6 @@ def travelRotor(character, rotor, direction, rotorPosition = 0):
 def travelReflector(character):
 	# pair all the characters in a random way
 	firstHalf	= {'a':'3', 'b':'4', 'c':'x', 'd':'v', 'e':'y', 'f':'0', 'g':'2', 'h':'w', 'i':'t', 'j':'9', 'k':'7', 'l':'z', 'm':'1', 'n':'5', 'o':'s', 'p':'8', 'q':'6', 'r':'u'} # 36/2 = 18 
-	#firstHalf	= {'0':'1', '2':'3', '4':'5', 'd':'v', 'e':'y', 'f':'c', 'g':'a', 'h':'w', 'i':'t', 'j':'9', 'k':'7', 'l':'z', 'm':'x', 'n':'b', 'o':'s', 'p':'8', 'q':'6', 'r':'u'} # 36/2 = 18 
 	secondHalf	= {v: k for k, v in firstHalf.iteritems()}
 
 	reflected = character
@@ -225,7 +249,6 @@ def transcodeMessage(message, plugboard, rotor1, rotor2, rotor3, rotorPositions)
 		transcodedMessage += travelPlugboard(step0, plugboard)	
 	
 	return ''.join(transcodedMessage)
-#	return ''.join(intermediate1)
 
 messageFile, settingsFile = check_args()
 plugboard, rotor1, rotor2, rotor3, rotorPositions, destinationFile = Setup(settingsFile)
