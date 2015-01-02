@@ -23,6 +23,5 @@ mem_alloc | uses a user specified ammount of 100MB blocks from system memory, ca
 script | purpose
 :----------- | :-----------  
 secret_santa | matches each given name with a single one of the other given names (without matching multiple names to the same one)
-amendigma    | encodes and decodes text files by emulating the WW2 Enigma machine 
 
 ####Projected:
