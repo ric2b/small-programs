@@ -1,0 +1,71 @@
+Lbl A
+	Disp "made by skjafar at gmail.com"
+	ClrHome
+	0->S
+	0->T
+	0->M
+	Input "NUM=",Str1
+	length(Str1)->L
+	Menu("--MENU--","DIGITAL",B,"1S COMP.",C,"2S COMP.",D)
+		Lbl B
+			For(A,0,L-1)
+				If sub(Str1,L-A,1)="1"
+				Then
+					S+2^(A)->S
+				Else
+					If sub(Str1,L-A,1)!="0"
+					Then
+						ClrHome
+						Output(1,1,"NOT A DIGIDTAL"
+						Output(2,1,"NUMBER"
+						Pause 
+						Goto A
+					End
+				End
+			End
+			Pause S
+			Goto A
+		
+		Lbl C
+			If sub(Str1,1,1)="1"
+			Then
+				1->M
+				For(A,0,L-2)
+					If sub(Str1,L-A,1)="0"
+					Then
+						S+2^(A)->S
+					Else
+						If sub(Str1,L-A,1)!="1"
+						Then
+							ClrHome
+							Output(1,1,"NOT A DIGITAL
+							Output(2,1,"NUMBER
+							Pause 
+							Goto A
+						End
+					End
+				End
+				~S->S
+			Else
+				If sub(Str1,1,1)="0"
+				Then
+					For(A,0,L-2)
+						If sub(Str1,L-A,1)="1"
+							S+2^(A)->S
+						End
+					End
+				End
+				If T=1
+					Goto E
+					Pause S
+					Goto A
+		
+		Lbl D
+			1->T
+			Goto C
+		
+		Lbl E
+			If M=1
+			S-1->S
+			Pause S
+			Goto A
