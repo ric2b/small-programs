@@ -24,4 +24,9 @@ script | purpose
 :----------- | :-----------  
 secret_santa | matches each given name with a single one of the other given names (without matching multiple names to the same one)
 
+####Bash Scripts:  
+script | purpose
+:----------- | :-----------  
+dobackup | makes a copy of target file with the current date appended to the filename. use it when you want to make a quick backup of a file you're about to change
+
 ####Projected:
