@@ -1,0 +1,16 @@
+#!/bin/bash
+# make a backup of target file with date appended to it
+
+if [ "$1" == "-install" ]; then
+    if [ "$EUID" -ne 0 ]; then
+       echo "Please run install as root"
+       exit 0
+    fi   
+    echo "installing..."
+
+    cp ${0:2} /usr/bin/${0:2}
+
+    echo "installed!"
+else
+    cp $1 $1.$(date +"%F")
+fi
