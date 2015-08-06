@@ -9,6 +9,7 @@ if [ "$1" == "-help" ]; then
     echo "'file'            backup 'file'; if a backup already exists, overwrite it (no spam)"
     echo "-b 'file'         backup 'file; if a backup already exists, backup the backup (Yo Dawg!)"
     echo "-restore 'file'   overwrite 'file' with today's backup; delete the backup"
+    echo "-rm 'file'        delete today's backups for 'file'"
     echo "-help             show these instructions"
 
 elif [ "$1" == "-install" ]; then
@@ -18,7 +19,7 @@ elif [ "$1" == "-install" ]; then
     fi   
     
     echo "installing..."
-    cp --backup=t ${0:2} /usr/bin/${0:2}
+    cp --backup=t $0 /usr/bin/$(basename $0)
     echo "installed!"
 
 elif [ "$1" == "-b" ]; then
@@ -26,6 +27,9 @@ elif [ "$1" == "-b" ]; then
 
 elif [ "$1" == "-restore" ]; then
     cp -r $2.$(date +"%F") $2
+
+elif [ "$1" == "-rm" ]; then
+    rm -r $2.$(date +"%F")*
 
 else
     cp -r $1 $1.$(date +"%F")
