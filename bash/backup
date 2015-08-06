@@ -32,6 +32,6 @@ elif [ "$1" == "-rm" ]; then
     rm -r $2.$(date +"%F")*
 
 else
-    cp -r $1 $1.$(date +"%F")
+    cp -r --backup $1 $1.$(date +"%F")
 
 fi
