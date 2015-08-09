@@ -1,7 +1,8 @@
 syntax on
-
 set bg=dark
-set tabstop=8
+
+filetype plugin indent on
+set tabstop=4
 set shiftwidth=4
 set softtabstop=0
 set expandtab
