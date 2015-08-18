@@ -5,6 +5,17 @@ The python folder contains scripts that do not require use of the makefile
   
 ==============  
 
+####Python Scripts:  
+script | purpose
+:----------- | :-----------  
+secret_santa | matches each given name with a single one of the other given names (without matching multiple names to the same one)
+monitorUptime | pings a target server every 20s to check if it's still up. If not, it records the start and end time on "hostname.uptime" and terminates itself
+
+####Bash Scripts:  
+script | purpose
+:----------- | :-----------  
+backup | makes a copy of target file with the current date appended to the filename. use it when you want to make a quick backup of a file you're about to change
+
 ####You can run these commands from a terminal in the repository folder:  
 
 command | effect  
@@ -18,15 +29,5 @@ make c | clean all .o files from the source folder
 progam | purpose
 :----------- | :-----------  
 mem_alloc | uses a user specified ammount of 100MB blocks from system memory, can be useful for testing
-
-####Python Scripts:  
-script | purpose
-:----------- | :-----------  
-secret_santa | matches each given name with a single one of the other given names (without matching multiple names to the same one)
-
-####Bash Scripts:  
-script | purpose
-:----------- | :-----------  
-backup | makes a copy of target file with the current date appended to the filename. use it when you want to make a quick backup of a file you're about to change
 
 ####Projected:
