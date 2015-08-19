@@ -16,6 +16,7 @@ script | purpose
 :----------- | :-----------  
 backup | makes a copy of target file with the current date appended to the filename. use it when you want to make a quick backup of a file you're about to change
 eye | a simple animation of a blinking eye (from 'The Talos Principle'). the delay between frames can be changed by giving any argument accepted by 'sleep'.
+lastlogin.sh | it prints a message very similar to ssh's 'last login'. do `last | head -1 | ./lastlogin.sh` to get the desired effect.
 
 ####You can run these commands from a terminal in the repository folder:  
 
