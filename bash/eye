@@ -1,8 +1,12 @@
 #!/bin/bash
 
-DELAY=0.1s
+blinkDELAY=1s
+blinkSPEED=0.1s
 if [ -n "$1" ]; then
-    DELAY=$1
+    blinkDELAY=$1
+    if [ -n "$2" ]; then
+        blinkSPEED=$2
+    fi
 fi
 
 function open {
@@ -62,21 +66,32 @@ printf "                                 ...'',;;;;;;;,,...
                           ..................'''..'''......\n"
 }
 
-clear
+printf "\033[;H" # move cursor to top of the screen
+#clear
+printf "\e[2m" # dim the text
+printf "\e[?25l" # hide the cursor
+
 open
-sleep $DELAY
+sleep $blinkDELAY 
 
-clear
+printf "\033[;H" # top of the screen
+#clear
 closing
-sleep $DELAY
+sleep $blinkSPEED
 
-clear
+printf "\033[;H" # top of the screen
+#clear
 closed
-sleep $DELAY
+sleep $blinkSPEED
 
-clear
+printf "\033[;H" # top of the screen
+#clear
 closing
-sleep $DELAY
+sleep $blinkSPEED
 
-clear
+printf "\033[;H" # top of the screen
+#clear
 open
+
+printf "\e[?25h" # unhide the cursor
+printf "\e[0m" # undim the text
