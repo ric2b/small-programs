@@ -3,48 +3,49 @@ import pprint
 import random
 import os
 
-def get_input(): # Get the names from the user
-	user_input = raw_input("Please input the names with a space in between >> ").split(" ")
 
-	# Get number of names and check if there are at least 2
-	n_people = len(user_input)
-	if n_people < 2:
-		print "You gift yourself, go make some friends"
-		exit()
+class SecretSanta:
 
-	# Make sure there are no repeated names
-	names = dict(zip(range(n_people), user_input))
-	if len(names.values()) != len(set(names.values())):
-		print "you entered the same name(s) more than once, try again"
-		exit()
-	return names, n_people
+    def __init__(self):
+        user_input = input("Please input the names with a space in between >> ").split(" ")
 
-def raffle(names, n_people): # For each person generate a random match that has not been used and is not the person itself
-	raffle_table = {}
-	for key in names:
-		valid = False
-		while valid == False:
-			attempt = random.randint(0,n_people-1)
-			valid = True 
-			if names[attempt] in raffle_table.values() or attempt == key:
-				valid = False
-					
-		raffle_table[names[key]] = names[attempt]
-	return raffle_table		
+        # Get number of names and check if there are at least 2
+        n_people = len(user_input)
+        if n_people < 2:
+            print("You gift yourself, go make some friends")
+            exit()
 
-def show_results(raffle_table): # Show each person their match
-	while True:
-		os.system('cls' if os.name == 'nt' else 'clear')
-		query = raw_input("Who are you? >> ")	
-		try:
-			print "You're " + raffle_table[query] + "'s secret santa! :D"
-			raw_input("\nPress Enter and allow the next person to query")
-		except: 
-			print "This name wasn't entered into the raffle, try again"
-			raw_input("(Press Enter)")
+        # Make sure there are no repeated names
+        names = dict(zip(range(n_people), user_input))
+        if len(names) != len(set(names.values())):
+            print("You entered the same name(s) more than once, try again")
+            exit()
+        self._names = names
+        self._n_people = n_people
+        self._raffle_table = {}
 
-names, n_people = get_input()
-raffle_table = raffle(names, n_people)
-print raffle_table
-raw_input()
-show_results(raffle_table)
+    # For each person generate a random match that has not been used and is not the person itself
+    def raffle(self):
+        for key in self._names:  # for each person...
+            while True:
+                attempt = random.randint(0, self._n_people-1)  # try to find another person who hasn't been assigned
+                if self._names[attempt] not in self._raffle_table.values() and attempt != key:
+                    break  # verified that the person isn't yet assigned to someone else
+
+            self._raffle_table[self._names[key]] = self._names[attempt]
+
+    def show_results(self):  # Show each person their match
+        while True:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            query = input("Who are you? >> ")
+            try:
+                print("You're " + self._raffle_table[query] + "'s secret santa! :D")
+                input("\nPress Enter and allow the next person to query")
+            except LookupError:
+                print("This name wasn't entered into the raffle, try again")
+                input("(Press Enter)")
+
+# run a secret santa :)
+SS = SecretSanta()
+SS.raffle()
+SS.show_results()
